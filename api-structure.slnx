@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../../../../../../source/repos/api-structure/API.Application/API.Application.csproj" />
+  <Project Path="../../../../../../source/repos/api-structure/API.Infrastructure/API.Infrastructure.csproj" />
+  <Project Path="../../../../../../source/repos/api-structure/API.Shared/API.Shared.csproj" />
+  <Project Path="../../../../../../source/repos/api-structure/API.Structure/API.Structure.csproj" />
+</Solution>
