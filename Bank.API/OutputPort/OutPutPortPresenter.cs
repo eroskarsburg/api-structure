@@ -1,9 +1,9 @@
-using API.Shared.Erros;
-using API.Shared.Responses;
-using API.Shared.Resultado;
+using Bank.Shared.Erros;
+using Bank.Shared.Responses;
+using Bank.Shared.Resultado;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Structure.OutputPort;
+namespace Bank.API.OutputPort;
 
 public class OutPutPortPresenter<T> : IOutputPort<T>
 {

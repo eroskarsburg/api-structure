@@ -1,6 +1,6 @@
-using API.Shared.Errors;
+using Bank.Shared.Errors;
 
-namespace API.Shared.Result;
+namespace Bank.Shared.Result;
 
 public abstract class Result<T>
 {

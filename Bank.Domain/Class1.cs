@@ -1,4 +1,4 @@
-﻿namespace API.Application
+﻿namespace Bank.Domain
 {
     public class Class1
     {

@@ -1,4 +1,4 @@
-namespace API.Shared.Errors;
+namespace Bank.Shared.Errors;
 
 public class Error
 {

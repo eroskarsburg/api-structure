@@ -1,4 +1,4 @@
-using API.Application.Login;
+using Bank.Application.Login;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);

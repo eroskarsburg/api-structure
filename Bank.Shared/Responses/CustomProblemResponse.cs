@@ -1,4 +1,4 @@
-namespace API.Shared.Responses;
+namespace Bank.Shared.Responses;
 
 public class CustomProblemResponse
 {

@@ -1,8 +1,8 @@
-using API.Shared.Erros;
-using API.Shared.Resultado;
+using Bank.Shared.Erros;
+using Bank.Shared.Resultado;
 using MediatR;
 
-namespace API.Application.Login;
+namespace Bank.Application.Login;
 
 public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
 {

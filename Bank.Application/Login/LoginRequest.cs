@@ -1,7 +1,7 @@
-using API.Shared.Resultado;
+using Bank.Shared.Resultado;
 using MediatR;
 
-namespace API.Application.Login;
+namespace Bank.Application.Login;
 
 public record LoginRequest : IRequest<Result<LoginResponse>>
 {

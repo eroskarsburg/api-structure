@@ -1,4 +1,4 @@
-﻿namespace API.Shared
+﻿namespace Bank.Infrastructure
 {
     public class Class1
     {
