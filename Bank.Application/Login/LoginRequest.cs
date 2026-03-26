@@ -1,4 +1,4 @@
-using Bank.Shared.Resultado;
+using Bank.Shared.Result;
 using MediatR;
 
 namespace Bank.Application.Login;

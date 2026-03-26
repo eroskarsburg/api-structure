@@ -1,6 +1,6 @@
-using Bank.Shared.Erros;
+using Bank.Shared.Errors;
 using Bank.Shared.Responses;
-using Bank.Shared.Resultado;
+using Bank.Shared.Result;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.API.OutputPort;
@@ -21,15 +21,15 @@ public class OutPutPortPresenter<T> : IOutputPort<T>
     public IActionResult BadRequest(IEnumerable<Error> erros)
     {
         var errosPorCampo = erros
-            .Where(e => e.Campo != null)
-            .GroupBy(e => e.Campo!)
-            .ToDictionary(g => g.Key, g => g.Select(e => e.Mensagem).ToArray());
+            .Where(e => e.Field != null)
+            .GroupBy(e => e.Field!)
+            .ToDictionary(g => g.Key, g => g.Select(e => e.Message).ToArray());
         var problema = new CustomProblemResponse
         {
             Tipo = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Titulo = "Requisicao invalida",
             Status = 400,
-            Detail = string.Join("; ", erros.Select(e => e.Mensagem)),
+            Detail = string.Join("; ", erros.Select(e => e.Message)),
             Instancia = _instanciaBase,
             Erros = errosPorCampo.Count > 0 ? errosPorCampo : null
         };
@@ -41,11 +41,11 @@ public class OutPutPortPresenter<T> : IOutputPort<T>
         var problema = new CustomProblemResponse
         {
             Tipo = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-            Titulo = erro.Codigo,
+            Titulo = erro.Code,
             Status = 400,
-            Detail = erro.Mensagem,
+            Detail = erro.Message,
             Instancia = _instanciaBase,
-            Codigo = erro.Codigo
+            Codigo = erro.Code
         };
         return _controller.BadRequest(problema);
     }

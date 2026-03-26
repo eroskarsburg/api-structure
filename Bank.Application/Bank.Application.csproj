@@ -13,4 +13,7 @@
     <PackageReference Include="MediatR" Version="12.4.1" />
     <ProjectReference Include="..\Bank.Shared\Bank.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="QrCode\" />
+  </ItemGroup>
 </Project>
