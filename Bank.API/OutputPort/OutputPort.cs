@@ -5,16 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.API.OutputPort;
 
-public class OutPutPortPresenter<T> : IOutputPort<T>
+public class OutputPort<T>(ControllerBase controller) : IOutputPort<T>
 {
-    private readonly ControllerBase _controller;
-    private readonly string _instanciaBase;
-
-    public OutPutPortPresenter(ControllerBase controller)
-    {
-        _controller = controller;
-        _instanciaBase = controller.HttpContext.Request.Path;
-    }
+    private readonly ControllerBase _controller = controller;
+    private readonly string _instanciaBase = controller.HttpContext.Request.Path;
 
     public IActionResult Success(T data) => _controller.Ok(data);
 
@@ -50,7 +44,7 @@ public class OutPutPortPresenter<T> : IOutputPort<T>
         return _controller.BadRequest(problema);
     }
 
-    public IActionResult Responder(Result<T> result)
+    public IActionResult Response(Result<T> result)
     {
         return result switch
         {

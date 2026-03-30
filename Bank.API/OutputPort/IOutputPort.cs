@@ -9,5 +9,5 @@ public interface IOutputPort<T>
     IActionResult Success(T data);
     IActionResult BadRequest(IEnumerable<Error> errors);
     IActionResult Fail(Error error);
-    IActionResult Responder(Result<T> result);
+    IActionResult Response(Result<T> result);
 }

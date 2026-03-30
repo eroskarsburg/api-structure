@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="Bank.API/Bank.API.csproj" />
-  <Project Path="Bank.Application/Bank.Application.csproj" />
-  <Project Path="Bank.Domain/Bank.Domain.csproj" Id="5b90e38b-96ff-4ba4-b864-2527dc7d0664" />
-  <Project Path="Bank.Infrastructure/Bank.Infrastructure.csproj" />
-  <Project Path="Bank.Shared/Bank.Shared.csproj" />
-</Solution>

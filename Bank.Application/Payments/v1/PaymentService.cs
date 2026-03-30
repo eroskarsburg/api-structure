@@ -1,7 +1,7 @@
 using Bank.Application.Payments.Mediator;
 using Bank.Shared.Result;
 
-namespace Bank.Application.Payments;
+namespace Bank.Application.Payments.v1;
 
 public class PaymentService : IPaymentService
 {

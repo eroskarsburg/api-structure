@@ -1,3 +1,4 @@
+using Bank.Application.Payments.v1;
 using Bank.Shared.Errors;
 using Bank.Shared.Result;
 

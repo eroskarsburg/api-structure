@@ -1,6 +1,6 @@
-namespace Bank.Application.Payments;
+namespace Bank.Application.QrCode.v1;
 
-public record QrCodeGenerationRequest(
+public record QrCodeRequest(
     Guid CustomerAccountId,
     decimal Amount,
     string PixKey,

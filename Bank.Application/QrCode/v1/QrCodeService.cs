@@ -4,11 +4,11 @@ using Bank.Application.Payments.QrCodeProviders;
 using Bank.Shared.Errors;
 using Bank.Shared.Result;
 
-namespace Bank.Application.Payments;
+namespace Bank.Application.QrCode.v1;
 
 public class QrCodeService : IQrCodeService
 {
-    private readonly ConcurrentDictionary<Guid, QrCodeGenerationResponse> _store = new();
+    private readonly ConcurrentDictionary<Guid, QrCodeResponse> _store = new();
     private readonly IPaymentProviderPriorityResolver _priorityResolver;
     private readonly IQrCodeProviderCatalog _providerCatalog;
 
@@ -20,25 +20,25 @@ public class QrCodeService : IQrCodeService
         _providerCatalog = providerCatalog;
     }
 
-    public Task<Result<QrCodeGenerationResponse>> GenerateAsync(QrCodeGenerationRequest request, CancellationToken cancellationToken)
+    public Task<Result<QrCodeResponse>> GenerateAsync(QrCodeRequest request, CancellationToken cancellationToken)
     {
         if (request.CustomerAccountId == Guid.Empty)
         {
-            return Task.FromResult(Result<QrCodeGenerationResponse>.BadRequest([
+            return Task.FromResult(Result<QrCodeResponse>.BadRequest([
                 Error.Create("VALIDATION_ERROR", "CustomerAccountId is required.", "customerAccountId")
             ]));
         }
 
         if (request.Amount <= 0)
         {
-            return Task.FromResult(Result<QrCodeGenerationResponse>.BadRequest([
+            return Task.FromResult(Result<QrCodeResponse>.BadRequest([
                 Error.Create("VALIDATION_ERROR", "Amount must be greater than zero.", "amount")
             ]));
         }
 
         if (string.IsNullOrWhiteSpace(request.PixKey))
         {
-            return Task.FromResult(Result<QrCodeGenerationResponse>.BadRequest([
+            return Task.FromResult(Result<QrCodeResponse>.BadRequest([
                 Error.Create("VALIDATION_ERROR", "PixKey is required.", "pixKey")
             ]));
         }
@@ -46,26 +46,26 @@ public class QrCodeService : IQrCodeService
         return GenerateWithFallbackAsync(request, cancellationToken);
     }
 
-    public Task<Result<QrCodeGenerationResponse>> GetByIdAsync(Guid qrCodeId, CancellationToken cancellationToken)
+    public Task<Result<QrCodeResponse>> GetByIdAsync(Guid qrCodeId, CancellationToken cancellationToken)
     {
         if (_store.TryGetValue(qrCodeId, out var response))
         {
-            return Task.FromResult(Result<QrCodeGenerationResponse>.Success(response));
+            return Task.FromResult(Result<QrCodeResponse>.Success(response));
         }
 
-        return Task.FromResult(Result<QrCodeGenerationResponse>.Fail(
+        return Task.FromResult(Result<QrCodeResponse>.Fail(
             Error.Create("QRCODE_NOT_FOUND", "QrCode was not found.", "qrCodeId")));
     }
 
-    private async Task<Result<QrCodeGenerationResponse>> GenerateWithFallbackAsync(
-        QrCodeGenerationRequest request,
+    private async Task<Result<QrCodeResponse>> GenerateWithFallbackAsync(
+        QrCodeRequest request,
         CancellationToken cancellationToken)
     {
         var providers = await _priorityResolver.ResolvePrioritizedProvidersAsync(request.CustomerAccountId, cancellationToken);
 
         if (providers.Count == 0)
         {
-            return Result<QrCodeGenerationResponse>.Fail(
+            return Result<QrCodeResponse>.Fail(
                 Error.Create("PAYMENT_PROVIDER_NOT_CONFIGURED", "No payment providers are configured for this customer account.", "customerAccountId"));
         }
 
@@ -87,7 +87,7 @@ public class QrCodeService : IQrCodeService
                     var createdAtUtc = DateTime.UtcNow;
                     var qrCodeId = Guid.NewGuid();
 
-                    var response = new QrCodeGenerationResponse(
+                    var response = new QrCodeResponse(
                         qrCodeId,
                         success.Value.EmvPayload,
                         success.Value.QrCodeText,
@@ -95,13 +95,13 @@ public class QrCodeService : IQrCodeService
                         request.ExpiresAtUtc);
 
                     _store[qrCodeId] = response;
-                    return Result<QrCodeGenerationResponse>.Success(response);
+                    return Result<QrCodeResponse>.Success(response);
 
                 case BadRequest<QrCodeProviderResponse> badRequest:
                     var errors = badRequest.Erros.Count > 0
                         ? badRequest.Erros
                         : [Error.Create("QRCODE_PROVIDER_VALIDATION_ERROR", $"Provider '{providerId}' rejected the request.")];
-                    return Result<QrCodeGenerationResponse>.BadRequest(errors);
+                    return Result<QrCodeResponse>.BadRequest(errors);
 
                 case Fail<QrCodeProviderResponse> fail:
                     lastError = fail.Erro;
@@ -113,7 +113,7 @@ public class QrCodeService : IQrCodeService
             }
         }
 
-        return Result<QrCodeGenerationResponse>.Fail(
+        return Result<QrCodeResponse>.Fail(
             lastError ?? Error.Create("QRCODE_GENERATION_FAILED", "Unable to generate a QR code using the configured providers."));
     }
 }

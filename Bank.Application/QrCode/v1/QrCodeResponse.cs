@@ -1,6 +1,6 @@
-namespace Bank.Application.Payments;
+namespace Bank.Application.QrCode.v1;
 
-public record QrCodeGenerationResponse(
+public record QrCodeResponse(
     Guid QrCodeId,
     string EmvPayload,
     string QrCodeText,

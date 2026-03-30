@@ -1,3 +1,4 @@
+using Bank.Application.QrCode.v1;
 using Bank.Shared.Errors;
 using Bank.Shared.Result;
 
@@ -8,7 +9,7 @@ public sealed class PixEmvStaticQrCodeProvider : IQrCodeProvider
     public string ProviderId => "pix_emv_static";
 
     public Task<Result<QrCodeProviderResponse>> GenerateAsync(
-        QrCodeGenerationRequest request,
+        QrCodeRequest request,
         CancellationToken cancellationToken)
     {
         var createdAtUtc = DateTime.UtcNow;
